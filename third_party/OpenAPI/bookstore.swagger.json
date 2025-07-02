@@ -1,0 +1,401 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "bookstore.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "BookStore"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/shelves": {
+      "get": {
+        "summary": "返回书店中所有书架的列表",
+        "operationId": "BookStore_ListShelves",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bookstoreListShelvesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "BookStore"
+        ]
+      },
+      "post": {
+        "summary": "在书店中创建一个新的书架",
+        "operationId": "BookStore_CreateShelf",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bookstoreShelf"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "shelf",
+            "description": "要创建的书架数据",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/bookstoreShelf"
+            }
+          }
+        ],
+        "tags": [
+          "BookStore"
+        ]
+      }
+    },
+    "/api/v1/shelves/{shelf}": {
+      "get": {
+        "summary": "返回书店中指定的书架",
+        "operationId": "BookStore_GetShelf",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bookstoreShelf"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "shelf",
+            "description": "要检索的书架 ID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "BookStore"
+        ]
+      },
+      "delete": {
+        "summary": "删除书架，包括书架上存储的所有图书",
+        "operationId": "BookStore_DeleteShelf",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "shelf",
+            "description": "要删除的书架的ID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "BookStore"
+        ]
+      }
+    },
+    "/api/v1/shelves/{shelf}/books": {
+      "get": {
+        "summary": "返回书架上的图书列表",
+        "operationId": "BookStore_ListBooks",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bookstoreListBooksResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "shelf",
+            "description": "ID of the shelf which books to list.",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "page_token",
+            "description": "Page token for pagination.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "BookStore"
+        ]
+      },
+      "post": {
+        "summary": "创建一本新图书",
+        "operationId": "BookStore_CreateBook",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bookstoreBook"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "shelf",
+            "description": "要在其上创建图书的书架的 ID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "book",
+            "description": "在书架上创建的图书数据",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/bookstoreBook"
+            }
+          }
+        ],
+        "tags": [
+          "BookStore"
+        ]
+      }
+    },
+    "/api/v1/shelves/{shelf}/books/{book}": {
+      "get": {
+        "summary": "返回特定的图书",
+        "operationId": "BookStore_GetBook",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bookstoreBook"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "shelf",
+            "description": "要从中检索图书的书架的 ID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "book",
+            "description": "要检索的图书的 ID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "BookStore"
+        ]
+      },
+      "delete": {
+        "summary": "从书架上删除一本图书",
+        "operationId": "BookStore_DeleteBook",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "shelf",
+            "description": "要从中删除图书的书架的 ID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "book",
+            "description": "要删除的图书的 ID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "BookStore"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "bookstoreBook": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64",
+          "title": "图书唯一的 id"
+        },
+        "author": {
+          "type": "string",
+          "title": "图书的作者"
+        },
+        "title": {
+          "type": "string",
+          "title": "书名"
+        }
+      },
+      "title": "图书资源"
+    },
+    "bookstoreListBooksResponse": {
+      "type": "object",
+      "properties": {
+        "books": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/bookstoreBook"
+          },
+          "title": "书架上的图书"
+        },
+        "next_page_token": {
+          "type": "string",
+          "title": "分页的下一页令牌"
+        }
+      },
+      "title": "ListBooks 方法的请求消息"
+    },
+    "bookstoreListShelvesResponse": {
+      "type": "object",
+      "properties": {
+        "shelves": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/bookstoreShelf"
+          }
+        }
+      },
+      "title": "调用 ListShelves 返回的响应消息"
+    },
+    "bookstoreShelf": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64",
+          "title": "图书的唯一 id"
+        },
+        "theme": {
+          "type": "string",
+          "title": "图书的作者"
+        },
+        "size": {
+          "type": "string",
+          "format": "int64",
+          "title": "书名"
+        }
+      },
+      "title": "书架资源"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

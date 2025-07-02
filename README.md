@@ -1,0 +1,2 @@
+## 结合 connect-go 和 grcp-gateway 的一个例子
+参考 [connect-gateway-example](https://github.com/johanbrandhorst/connect-gateway-example), [go-micro-service-and-cloud-native-course](https://github.com/Q1mi/go-micro-service-and-cloud-native-course)
