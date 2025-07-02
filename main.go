@@ -93,6 +93,13 @@ func run() error {
 		Tags:    []string{"hchao"},
 		Address: localIP.String(),
 		Port:    port,
+		Check: &api.AgentServiceCheck{
+			HTTP:                           fmt.Sprintf("http://%s:%d/healthz", localIP.String(), port),
+			Method:                         "GET",
+			Interval:                       "10s",
+			Timeout:                        "1s",
+			DeregisterCriticalServiceAfter: "1m",
+		},
 	}
 	// 注册服务到 Consul
 	cc.Agent().ServiceRegister(srv)
@@ -101,6 +108,10 @@ func run() error {
 	mux.Handle("/", getOpenAPIHandler())
 	mux.Handle(protoconnect.NewBookStoreHandler(&server{bs: &bookstore{db: db}}))
 	mux.Handle("/api/v1/", gwmux)
+	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("OK"))
+	})
 	server := &http.Server{
 		Addr:    addr,
 		Handler: h2c.NewHandler(mux, &http2.Server{}),
