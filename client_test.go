@@ -69,7 +69,7 @@ func TestListBooks(t *testing.T) {
 
 func TestConsul(t *testing.T) {
 	conn, err := grpc.NewClient(
-		"consul://localhost:8500/hello?healthy=true",
+		"consul://localhost:8500/bookstore?healthy=true",
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 
