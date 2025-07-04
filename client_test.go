@@ -9,6 +9,9 @@ import (
 	"testing"
 
 	"connectrpc.com/connect"
+	_ "github.com/mbobakov/grpc-consul-resolver"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -62,4 +65,21 @@ func TestListBooks(t *testing.T) {
 		t.Fatalf("ListBooks failed: %v", err)
 	}
 	log.Printf("ListBooks response: %v", resp.Msg.Books)
+}
+
+func TestConsul(t *testing.T) {
+	conn, err := grpc.NewClient(
+		"consul://localhost:8500/hello?healthy=true",
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	)
+
+	c := proto.NewBookStoreClient(conn)
+	req := &proto.ListBooksRequest{
+		Shelf: 5,
+	}
+	resp, err := c.ListBooks(context.Background(), req)
+	if err != nil {
+		t.Fatalf("ListBooks failed: %v", err)
+	}
+	log.Printf("ListBooks response: %v", resp.Books)
 }
